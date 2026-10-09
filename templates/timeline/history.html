@@ -1,0 +1,56 @@
+<!-- ประวัติการแจ้งเตือน — ทุกฉบับที่ส่งออกไปแล้ว และคิวที่รอส่ง
+     ใช้ data-table (TableManager) ไม่ใช่ data-component="api" เหมือนหน้าอื่นในโมดูลนี้
+     เพราะตารางนี้โตขึ้นทุกวัน ต้องมีแบ่งหน้า ค้นหา ตัวกรอง และเลือกหลายแถวเพื่อลบ -->
+<aside data-component="sidebar"></aside>
+<div class="main-content">
+  <div>
+    <header data-component="topbar"></header>
+    <main class="content">
+      <div class="card-groups">
+        <header>
+          <div>
+            <h1 class="icon-bell" data-i18n>{LNG_Notification history}</h1>
+            <p data-i18n>{LNG_Every message this system sent, and the queue still waiting. Sent rows can always be deleted. Queued rows can only be deleted once the thing they are about is gone}</p>
+          </div>
+          <div>
+            <button type="button" class="btn btn-danger icon-delete" data-history-clear data-i18n>{LNG_Clear history}</button>
+          </div>
+        </header>
+        <div class="content-body">
+          <div class="tablebody">
+            <table class="table border fullwidth" id="timeline-history"
+                   data-table="timelineHistory"
+                   data-source="api/timeline/history"
+                   data-default-sort="id desc"
+                   data-page-size="25"
+                   data-search-columns="title,kind"
+                   data-show-checkbox="true"
+                   data-actions='{"delete":"Delete"}'
+                   data-action-url="api/timeline/history/action"
+                   data-action-button="Process|btn-danger">
+              <thead>
+                <tr>
+                  <th data-field="when" data-sort="sent_at" class="center" data-cell-class="center"
+                      data-template="<span>${when}</span><br><small>${offset_text}</small>" data-i18n>{LNG_Sent}</th>
+                  <th data-field="title" data-sort="title"
+                      data-template="<b>${title}</b><br><small>${kind_text}</small>" data-i18n>{LNG_Message}</th>
+                  <th data-field="source_id" data-filter="true" data-type="select" data-show-all="true" data-all-value=""
+                      data-label="Application" data-template="<small>${source_name}</small>" data-i18n>{LNG_Application}</th>
+                  <th data-field="kind" data-filter="true" data-type="select" data-show-all="true" data-all-value=""
+                      data-label="Kind" data-template="<small>${kind}</small>" data-i18n>{LNG_Kind}</th>
+                  <th data-field="channel" class="center" data-cell-class="center"
+                      data-template="<small>${channel_text}</small>" data-i18n>{LNG_Channel}</th>
+                  <th data-field="status" data-sort="status" class="center" data-cell-class="center"
+                      data-filter="true" data-type="select" data-show-all="true" data-all-value="" data-label="Status"
+                      data-template="<span class='tl-badge tl-r-${status}'>${status_text}</span><br><small class='timeline-alert-error'>${error}</small>"
+                      data-i18n>{LNG_Status}</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

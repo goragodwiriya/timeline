@@ -1,0 +1,118 @@
+<aside data-component="sidebar"></aside>
+<div class="main-content">
+  <div>
+    <header data-component="topbar"></header>
+    <main class="content">
+      <div class="content-body">
+        <div class="card-groups">
+          <header>
+            <div>
+              <h1 class="icon-refresh" data-i18n>{LNG_Connections}</h1>
+              <p data-i18n>{LNG_Where the data on every screen comes from, and how fresh it is}</p>
+            </div>
+            <div>
+              <button type="button" class="btn icon-plus" data-source-new data-i18n>{LNG_Add application}</button>
+              <button type="button" class="btn btn-primary icon-refresh" data-timeline-sync="0" data-i18n>{LNG_Sync Now}</button>
+            </div>
+          </header>
+          <div class="tablebody" data-component="api" data-endpoint="api/timeline/connections" data-refresh-event="timeline:reload" data-pagination="false"
+               id="timeline-connections">
+            <table class="table border fullwidth">
+              <thead>
+                <tr>
+                  <th data-i18n>{LNG_Application}</th>
+                  <th data-i18n>{LNG_Items}</th>
+                  <th data-i18n>{LNG_Last successful sync}</th>
+                  <th data-i18n>{LNG_Status}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody data-for="row in data">
+                <template>
+                  <tr class="tl-{{row.state}}">
+                    <td>
+                      <b data-text="row.name"></b><br>
+                      <small data-text="row.slug"></small>
+                    </td>
+                    <td data-text="row.items"></td>
+                    <td>
+                      <span data-text="row.last_ok_text"></span><br>
+                      <small data-text="row.last_ok_at"></small>
+                    </td>
+                    <td>
+                      <span class="tl-badge tl-{{row.state}}" data-i18n>{{row.state_lng}}</span>
+                      <small class="timeline-alert-error" data-text="row.last_error"></small>
+                    </td>
+                    <td class="tl-actions">
+                      <span data-for="btn in row.sync_button">
+                        <template>
+                          <button type="button" class="btn btn-primary icon-refresh" data-attr="data-timeline-sync:btn" data-i18n>{LNG_Sync Now}</button>
+                        </template>
+                      </span>
+                      <span data-for="btn in row.edit_button">
+                        <template>
+                          <button type="button" class="btn icon-edit" data-attr="data-source-edit:btn" data-i18n>{LNG_Edit}</button>
+                          <button type="button" class="btn btn-danger icon-delete" data-attr="data-source-remove:btn,data-source-name:row.name" data-i18n>{LNG_Delete}</button>
+                        </template>
+                      </span>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-groups">
+          <header>
+            <div>
+              <h1 class="icon-bell" data-i18n>{LNG_Rules per kind}</h1>
+              <p data-i18n>{LNG_Two switches per kind: whether it goes to chat, and whether it shows on the Today board. Hidden kinds are still stored and still turn up in search}
+              </p>
+            </div>
+            <div>
+              <button type="button" class="btn icon-plus" data-rule-new data-i18n>{LNG_Add rule}</button>
+            </div>
+          </header>
+          <div class="tablebody" data-component="api" data-endpoint="api/timeline/reminders" data-refresh-event="reminders:reload" data-pagination="false" id="timeline-reminders">
+            <table class="table border fullwidth">
+              <thead>
+                <tr>
+                  <th data-i18n>{LNG_Kind}</th>
+                  <th data-i18n>{LNG_Application}</th>
+                  <th data-i18n>{LNG_When}</th>
+                  <th data-i18n>{LNG_Items}</th>
+                  <th data-i18n>{LNG_Chat}</th>
+                  <th data-i18n>{LNG_On the board}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody data-for="row in data">
+                <template>
+                  <tr class="tl-rule-{{row.state}} tl-board-{{row.board_state}}">
+                    <td>
+                      <b data-text="row.label"></b><br>
+                      <small data-text="row.kind"></small>
+                    </td>
+                    <td><small data-text="row.source_name"></small></td>
+                    <td><small data-text="row.offsets_text"></small></td>
+                    <td data-text="row.items"></td>
+                    <td><span class="tl-badge tl-rule-{{row.state}}" data-text="row.state_text"></span></td>
+                    <td>
+                      <button type="button" class="btn {{row.board_class}}" data-attr="data-board-toggle:row.id,data-board-next:row.board_next" data-text="row.board_text"></button>
+                    </td>
+                    <td class="tl-actions">
+                      <button type="button" class="btn {{row.button_class}}" data-attr="data-reminder-toggle:row.id,data-reminder-next:row.next"
+                              data-text="row.button_text"></button>
+                      <button type="button" class="btn icon-edit" data-attr="data-rule-edit:row.id" data-i18n>{LNG_Edit}</button>
+                      <button type="button" class="btn btn-danger icon-delete" data-attr="data-rule-remove:row.id,data-rule-name:row.label" data-i18n>{LNG_Delete}</button>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<aside data-component="sidebar"></aside>
+<div class="main-content">
+  <div>
+    <header data-component="topbar"></header>
+    <main class="content">
+      <div class="card-groups">
+        <header>
+          <div>
+            <h1 class="icon-clock" data-i18n>{LNG_Appointments}</h1>
+            <p data-i18n>{LNG_The only thing the Hub owns itself}</p>
+          </div>
+          <div>
+            <button type="button" class="btn btn-primary icon-plus" data-appt-new data-i18n>{LNG_Add appointment}</button>
+          </div>
+        </header>
+        <div class="content-body">
+          <!-- ฟอร์มอยู่ใน templates/appointment/form.html เปิดเป็น Modal -->
+          <div data-component="api"
+               data-endpoint="api/appointment/items"
+               data-refresh-event="appointment:reload"
+               data-pagination="false"
+               id="appt-list">
+            <div class="timeline-cards" data-for="row in data">
+              <template>
+                <article class="timeline-card p-{{row.priority}} {{row.past_class}}" data-attr="data-appt:row.id">
+                  <div class="timeline-card-when">
+                    <b data-text="row.when"></b>
+                    <span data-text="row.date_text"></span>
+                  </div>
+                  <div class="timeline-card-body">
+                    <h3 data-text="row.title"></h3>
+                    <p class="timeline-card-sub" data-text="row.where_text"></p>
+                    <p class="timeline-card-sub appt-detail" data-text="row.detail"></p>
+                  </div>
+                  <div class="timeline-card-actions">
+                    <span data-for="id in row.done_button">
+                      <template>
+                        <button type="button" class="btn icon-valid"
+                                data-attr="data-appt-done:id" data-i18n>{LNG_Done}</button>
+                      </template>
+                    </span>
+                    <span data-for="badge in row.done_badge">
+                      <template>
+                        <span class="tl-badge tl-ok" data-text="badge.text"></span>
+                      </template>
+                    </span>
+                    <button type="button" class="btn icon-edit"
+                            data-attr="data-appt-edit:row.id" data-i18n>{LNG_Edit}</button>
+                    <button type="button" class="btn btn-danger icon-delete"
+                            data-attr="data-appt-remove:row.id" data-i18n>{LNG_Delete}</button>
+                  </div>
+                </article>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

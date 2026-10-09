@@ -1,0 +1,69 @@
+<aside data-component="sidebar"></aside>
+<div class="main-content">
+  <div>
+    <header data-component="topbar"></header>
+    <main class="content">
+      <div class="card-groups">
+        <header>
+          <div>
+            <h1 class="icon-comments" data-i18n>{LNG_Chat account}</h1>
+            <p data-i18n>{LNG_Link a chat room so it can read and act on your timeline}</p>
+          </div>
+        </header>
+        <div class="content-body" data-component="api"
+             data-endpoint="api/timeline/chatlink"
+             data-refresh-event="chatlink:reload"
+             data-pagination="false"
+             id="timeline-chatlink">
+          <table class="table border fullwidth">
+            <thead>
+              <tr>
+                <th data-i18n>{LNG_Channel}</th>
+                <th data-i18n>{LNG_Status}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody data-for="row in data">
+              <template>
+                <tr>
+                  <td><b data-text="row.label"></b></td>
+                  <td>
+                    <span class="tl-badge {{row.badge_class}}" data-i18n>{{row.status_lng}}</span>
+                    <span data-text="row.hint"></span>
+                  </td>
+                  <td>
+                    <span data-for="channel in row.unlink_button">
+                      <template>
+                        <button type="button" class="btn btn-danger"
+                                data-attr="data-unlink:channel" data-i18n>{LNG_Unlink}</button>
+                      </template>
+                    </span>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+
+          <div class="timeline-linkbox">
+            <h3 data-i18n>{LNG_Link a new chat room}</h3>
+            <ol>
+              <li data-i18n>{LNG_Press the button to get a code}</li>
+              <li data-i18n>{LNG_Type /link followed by the code in the chat}</li>
+            </ol>
+            <!-- อยู่ใน data-for ทั้งที่มีสมาชิกเดียวเสมอ: ตัวแทนค่าปีกกาคู่ที่วางไว้
+                 ระดับบนสุดของ component จะถูกรอบ i18n ของหน้าแตะก่อนข้อมูลจะมาถึง
+                 แล้วเหลือชื่อฟิลด์ในปีกกาเดี่ยวค้างอยู่บนจอ · ข้างใน data-for
+                 ปลอดภัย เพราะ clone ถูกสร้างหลังข้อมูลมาแล้วและ i18n รันใหม่ทุกครั้ง -->
+            <div data-for="bot in bot_line">
+              <template>
+                <p class="{{bot.css}}" data-i18n>{{bot.text_lng}}</p>
+              </template>
+            </div>
+            <button type="button" class="btn btn-primary icon-key" data-issue-code data-i18n>{LNG_Get a code}</button>
+            <div id="timeline-code"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

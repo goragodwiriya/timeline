@@ -1,0 +1,80 @@
+<!-- ฟอร์มเพิ่ม/แก้กฎการเตือน — เปิดเป็น Modal จาก api/timeline/reminders/form
+     แยกจาก connections.html ตามกติกา "ตารางกับฟอร์มคนละเทมเพลต" -->
+<form data-form="timelineRule" action="api/timeline/reminders/save" method="post"
+      data-ajax-submit="true" data-validate="false" data-reset="false" autocomplete="off">
+  <fieldset>
+    <legend class="icon-bell" data-i18n>{LNG_What to warn about}</legend>
+    <div class="form-group">
+      <div class="width50">
+        <label for="rule_kind" data-i18n>{LNG_Kind}</label>
+        <span class="form-control icon-tag">
+          <input type="text" id="rule_kind" name="kind" list="rule-kinds"
+                 data-attr="value:kind" pattern="[a-z0-9_.*]{1,64}" maxlength="64"
+                 placeholder="expiry.hosting" required>
+        </span>
+        <datalist id="rule-kinds" data-for="opt in kinds">
+          <template>
+            <option data-attr="value:opt.value" data-text="opt.text"></option>
+          </template>
+        </datalist>
+        <div class="comment" data-i18n>{LNG_expiry.* covers every expiry kind, * covers everything else}</div>
+      </div>
+      <div class="width50">
+        <label for="rule_source_id" data-i18n>{LNG_Application}</label>
+        <span class="form-control icon-connection">
+          <select id="rule_source_id" name="source_id"
+                  data-options-key="sources" data-attr="value:source_id"></select>
+        </span>
+        <div class="comment" data-i18n>{LNG_A rule for one application wins over the all-applications rule}</div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend class="icon-clock" data-i18n>{LNG_How far ahead}</legend>
+    <div>
+      <label for="rule_offsets" data-i18n>{LNG_Warn this far ahead}</label>
+      <span class="form-control icon-calendar">
+        <input type="text" id="rule_offsets" name="offsets" data-attr="value:offsets"
+               maxlength="120" placeholder="30, 7, 1" required>
+      </span>
+      <div class="comment" data-i18n>{LNG_Separate with commas. A bare number means days. Also accepts 1 hour, 90 minutes, 2 weeks, 0 for on the day}</div>
+    </div>
+    <div class="form-group">
+      <div class="width50">
+        <label for="rule_max_repeat" data-i18n>{LNG_Repeat daily after the due date}</label>
+        <span class="form-control icon-refresh">
+          <input type="number" id="rule_max_repeat" name="max_repeat"
+                 data-attr="value:max_repeat" min="0" max="30" required>
+        </span>
+        <div class="comment" data-i18n>{LNG_0 means no repeat. Only for things that cannot be left alone}</div>
+      </div>
+      <div class="width50">
+        <label>&nbsp;</label>
+        <div>
+          <input type="checkbox" class="switch" id="rule_enabled" name="enabled" value="1"
+                 data-attr="checked:enabled">
+          <label for="rule_enabled" data-i18n>{LNG_Send notifications}</label>
+        </div>
+        <div class="comment" data-i18n>{LNG_Goes to every configured channel. Turning this off keeps the items on the site, it only stops the message}</div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend class="icon-calendar" data-i18n>{LNG_On the board}</legend>
+    <div>
+      <div>
+        <input type="checkbox" class="switch" id="rule_visible" name="visible" value="1"
+               data-attr="checked:visible">
+        <label for="rule_visible" data-i18n>{LNG_Show on the Today board}</label>
+      </div>
+      <div class="comment" data-i18n>{LNG_Turn this off for kinds that arrive in bulk and bury everything else. They stay in the database and still turn up when you search or filter by this kind}</div>
+    </div>
+  </fieldset>
+
+  <fieldset class="submit">
+    <button type="submit" class="btn btn-primary icon-save" data-i18n>{LNG_Save}</button>
+    <input type="hidden" name="id" data-attr="value:id">
+  </fieldset>
+</form>

@@ -1,0 +1,152 @@
+<aside data-component="sidebar"></aside>
+<div class="main-content">
+  <div>
+    <header data-component="topbar"></header>
+    <main class="content">
+      <div class="card-groups">
+        <header>
+          <div>
+            <h1 class="icon-event" data-i18n>{LNG_Today}</h1>
+            <p data-i18n>{LNG_Everything that needs your attention, in one place}</p>
+          </div>
+          <div>
+            <button type="button" class="btn btn-primary icon-refresh" data-timeline-sync="0" data-i18n>{LNG_Sync Now}</button>
+          </div>
+        </header>
+
+        <!-- ApiComponent วาดจาก "ลูกโดยตรง" ของตัวเอง ไม่ได้ใช้ <template> ที่ครอบไว้
+             (มันเก็บ templateContent ไว้แต่ไม่เคยอ่าน) · <template> ที่ใช้จริงมีที่
+             เดียวคือข้างใน data-for ซึ่งเป็นกติกาของ TemplateManager
+             ห้ามใช้ data-if ที่ระดับนี้ — เท็จเมื่อไรอิลิเมนต์ถูกถอดออกจาก DOM
+             แล้ว TreeWalker ของ component หามันไม่เจออีกเลย · ให้เซิร์ฟเวอร์ส่ง
+             array มาแทน แล้ววนด้วย data-for
+             ตัวกรองกลุ่มอ่านจาก ?view= ของ URL (data-url-params) ไม่ใช่ตัวแปรใน JS
+             — หน้าปฏิทินจึงลิงก์ตรงเข้ามาพร้อมตัวกรองได้ ปุ่มย้อนกลับของเบราว์เซอร์
+             ทำงานตามปกติ และลิงก์ที่ก๊อบไปส่งต่อยังเปิดได้ตรงตามที่เห็น -->
+        <div class="content-body" data-component="api"
+             data-endpoint="api/timeline/today"
+             data-url-params="true"
+             data-url-params-fields="view"
+             data-refresh-event="timeline:reload"
+             data-pagination="false"
+             id="timeline-today">
+
+          <div class="timeline-alerts" data-for="src in alerts">
+            <template>
+              <div class="timeline-alert">
+                <span class="icon-warning"></span>
+                <b data-text="src.name"></b>
+                <span data-text="src.state_text"></span>
+                <span class="timeline-alert-error" data-text="src.error"></span>
+                <a class="btn" href="/connections" data-i18n>{LNG_Connections}</a>
+              </div>
+            </template>
+          </div>
+
+          <!-- การ์ดสรุปคือตัวเลือกกลุ่มไปในตัว — กดใบไหนคือดูเฉพาะกลุ่มนั้น
+               กดใบที่เลือกอยู่ซ้ำคือกลับไปดูทั้งหมด (ค่าเริ่มต้น) · ตัวเลขบนการ์ด
+               นับทุกกลุ่มเสมอ ไม่หดตามตัวกรอง เพราะมันคือทางเดินไปกลุ่มอื่น
+               ลิงก์เป็น /today?view=... ธรรมดา RouterManager จับเอง หน้าจึงลิงก์
+               ตรงเข้ามาจากที่อื่นได้ และปุ่มย้อนกลับของเบราว์เซอร์ทำงานตามปกติ
+               การ์ดชุดเดียวกันนี้อยู่ที่หน้าปฏิทินด้วย (templates/timeline/calendar.html)
+               ทั้งสองที่รับข้อมูลจาก Timeline\Today\Model::views() ตัวเดียวกัน
+               data-for วางบน .ggrid เอง ไม่ครอบอีกชั้น — .ggrid > .blockN เป็น
+               selector ลูกโดยตรง ครอบเมื่อไรกริดสิบสองคอลัมน์ไม่ทำงาน -->
+          <div class="ggrid timeline-views" data-for="view in views">
+            <template>
+              <a class="block3 large6 stat-card timeline-stat is-{{view.key}} {{view.active}}" href="{{view.url}}">
+                <div class="stat-header icon-{{view.icon}}">
+                  <div class="stat-title" data-i18n>{{view.label_lng}}</div>
+                </div>
+                <div class="stat-value" data-text="view.count"></div>
+              </a>
+            </template>
+          </div>
+
+          <!-- กำลังกรองอยู่ ต้องบอกให้เห็นพร้อมทางกลับที่ชัดเจน
+               ไม่ใช่ให้เดาเองว่ากดการ์ดใบเดิมซ้ำแล้วจะได้ทั้งหมดคืน -->
+          <div data-for="active in active_view">
+            <template>
+              <div class="timeline-filter">
+                <span data-i18n>{LNG_Showing only}</span>
+                <b data-i18n>{{active.label_lng}}</b>
+                <a class="btn icon-list" href="/today" data-i18n>{LNG_Show all}</a>
+              </div>
+            </template>
+          </div>
+
+          <!-- ข้อความมาจากเซิร์ฟเวอร์ เพราะ "ไม่มีอะไรต้องสนใจ" กับ "กลุ่มนี้ว่าง
+               แต่กลุ่มอื่นยังมีของค้าง" เป็นคนละเรื่องกัน -->
+          <div data-for="none in empty_state">
+            <template>
+              <div class="timeline-empty">
+                <span class="icon-valid"></span>
+                <p data-i18n>{{none.text_lng}}</p>
+              </div>
+            </template>
+          </div>
+
+          <div data-for="group in groups">
+            <template>
+              <section class="timeline-group is-{{group.key}}">
+                <h2>
+                  <span data-i18n>{{group.label_lng}}</span>
+                  <em data-text="group.count"></em>
+                </h2>
+                <div class="timeline-cards" data-for="card in group.cards">
+                  <template>
+                    <article class="timeline-card p-{{card.priority}}" data-attr="data-item:card.id">
+                      <div class="timeline-card-when">
+                        <!-- when มีทั้งระยะห่างและวันที่จริงอยู่ในตัวแล้ว (Attention::whenText)
+                             เคยแยกเป็นสองช่องแล้วช่องวันที่หลุดหายในจออื่น -->
+                        <b data-text="card.when"></b>
+                      </div>
+                      <div class="timeline-card-body">
+                        <h3><span class="icon-{{card.icon}}"></span> {{card.title}}</h3>
+                        <p class="timeline-card-sub" data-text="card.subtitle"></p>
+                        <dl class="timeline-facts" data-for="fact in card.facts">
+                          <template>
+                            <dt data-text="fact.label"></dt>
+                            <dd data-text="fact.value"></dd>
+                          </template>
+                        </dl>
+                        <p class="timeline-card-src" data-text="card.source_name"></p>
+                      </div>
+                      <div class="timeline-card-actions">
+                        <span data-for="phone in card.phones">
+                          <template>
+                            <a class="btn btn-info icon-phone" href="tel:{{phone}}">{{phone}}</a>
+                          </template>
+                        </span>
+                        <span data-for="link in card.links">
+                          <template>
+                            <a class="btn" target="_blank" rel="noopener"
+                               href="{{link.url}}">{{link.label}}</a>
+                          </template>
+                        </span>
+                        <span data-for="action in card.actions">
+                          <template>
+                            <button type="button" class="btn btn-success"
+                                    data-attr="data-run-action:action.id,data-item:card.id,data-confirm:action.confirm_text,data-fields:action.fields_json">{{action.label}}</button>
+                          </template>
+                        </span>
+                        <button type="button" class="btn btn-success icon-valid"
+                                data-state="done" data-attr="data-item:card.id" data-i18n>{LNG_Done}</button>
+                        <span class="timeline-snooze">
+                          <b data-i18n>{LNG_Snooze}</b>
+                          <button type="button" class="btn" data-snooze="1" data-attr="data-item:card.id">1</button>
+                          <button type="button" class="btn" data-snooze="3" data-attr="data-item:card.id">3</button>
+                          <button type="button" class="btn" data-snooze="7" data-attr="data-item:card.id">7</button>
+                        </span>
+                      </div>
+                    </article>
+                  </template>
+                </div>
+              </section>
+            </template>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

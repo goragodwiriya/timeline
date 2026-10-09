@@ -1,0 +1,73 @@
+<!-- ฟอร์มเพิ่ม/แก้นัดหมาย — เปิดเป็น Modal จาก api/appointment/items/form
+     แยกจาก index.html ตามกติกา "รายการกับฟอร์มคนละเทมเพลต" ฟอร์มจึงไม่ถูก
+     วาดใหม่ตอนรายการรีเฟรช -->
+<form data-form="appointment" action="api/appointment/items/save" method="post"
+      data-ajax-submit="true" data-validate="false" data-reset="false" autocomplete="off">
+  <fieldset>
+    <div>
+      <label for="appt_title" data-i18n>{LNG_Subject}</label>
+      <span class="form-control icon-edit">
+        <input type="text" id="appt_title" name="title" data-attr="value:title"
+               maxlength="255" placeholder="{LNG_e.g. Dentist}" required>
+      </span>
+    </div>
+    <div class="form-group">
+      <div class="width33">
+        <label for="appt_date" data-i18n>{LNG_Date}</label>
+        <span class="form-control icon-calendar">
+          <input type="date" id="appt_date" name="date" data-attr="value:date" required>
+        </span>
+      </div>
+      <div class="width33">
+        <label for="appt_start_time" data-i18n>{LNG_Start time}</label>
+        <span class="form-control icon-clock">
+          <input type="time" id="appt_start_time" name="start_time" data-attr="value:start_time">
+        </span>
+      </div>
+      <div class="width33">
+        <label for="appt_end_time" data-i18n>{LNG_End time}</label>
+        <span class="form-control icon-clock">
+          <input type="time" id="appt_end_time" name="end_time" data-attr="value:end_time">
+        </span>
+      </div>
+    </div>
+    <div>
+      <!-- ติ๊กแล้ว admin.js ปิดช่องเวลาทั้งสอง — ช่องที่ถูกปิดไม่ถูกส่งไปกับฟอร์ม -->
+      <input type="checkbox" class="switch" id="appt_all_day" name="all_day" value="1"
+             data-attr="checked:all_day" data-appt-all-day>
+      <label for="appt_all_day" data-i18n>{LNG_All day}</label>
+    </div>
+    <div>
+      <label for="appt_location" data-i18n>{LNG_Venue}</label>
+      <span class="form-control icon-location">
+        <input type="text" id="appt_location" name="location" data-attr="value:location" maxlength="255">
+      </span>
+    </div>
+    <div>
+      <label for="appt_detail" data-i18n>{LNG_Detail}</label>
+      <span class="form-control icon-file">
+        <textarea id="appt_detail" name="detail" rows="4" data-text="detail"
+                  placeholder="{LNG_Anything else worth keeping about this appointment}"></textarea>
+      </span>
+    </div>
+    <div class="form-group">
+      <div class="width50">
+        <label for="appt_priority" data-i18n>{LNG_Priority}</label>
+        <span class="form-control icon-star0">
+          <select id="appt_priority" name="priority" data-options-key="priority" data-attr="value:priority"></select>
+        </span>
+      </div>
+      <div class="width50">
+        <label for="appt_status" data-i18n>{LNG_Status}</label>
+        <span class="form-control icon-valid">
+          <select id="appt_status" name="status" data-options-key="status" data-attr="value:status"></select>
+        </span>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="submit">
+    <button type="submit" class="btn btn-primary icon-save" data-i18n>{LNG_Save}</button>
+    <input type="hidden" name="id" data-attr="value:id">
+  </fieldset>
+</form>
