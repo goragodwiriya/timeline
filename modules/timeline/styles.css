@@ -1,0 +1,398 @@
+/**
+ * modules/timeline/styles.css
+ *
+ * หน้าจอ Central Timeline Hub
+ *
+ * ใช้ตัวแปรสีของธีมกลาง (--*) ทั้งหมด เพื่อให้สลับธีมสว่าง/มืดได้โดยไม่ต้อง
+ * เขียนกฎซ้ำสำหรับแต่ละธีม
+ */
+
+.timeline-today,
+.timeline-connections {
+  display: block;
+}
+
+.timeline-loading,
+.timeline-error,
+.timeline-empty {
+  padding: 2em 1em;
+  text-align: center;
+  color: var(--text-muted, #6b7280);
+}
+
+.timeline-empty .icon-valid::before {
+  font-size: 2.5em;
+  color: var(--success, #10b981);
+}
+
+.timeline-error {
+  color: var(--danger, #dc2626);
+}
+
+/* แถบเตือนว่าข้อมูลของระบบใดเก่าหรือหลุดการเชื่อมต่อ
+   ต้องเด่นพอที่จะไม่ถูกมองข้าม เพราะข้อมูลทั้งหน้ามาจากสำเนา */
+/* กล่องครอบต้องไม่มีพื้นหลังหรือกรอบของตัวเอง
+   มันคือตัวที่ data-for วนอยู่ ซึ่งจะยังอยู่ในหน้าเสมอแม้ไม่มีรายการ —
+   ใส่สไตล์ไว้ที่นี่เมื่อไร จะเห็นเป็นแถบเปล่าค้างอยู่ตอนทุกอย่างปกติ */
+.timeline-alerts {
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+}
+
+.timeline-alerts:not(:empty) {
+  margin-bottom: 1em;
+}
+
+.timeline-alert {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5em;
+  align-items: center;
+  padding: .75em 1em;
+  border-radius: .5em;
+  border-left: 4px solid var(--warning, #f59e0b);
+  background: var(--warning-bg, rgba(245, 158, 11, .12));
+}
+
+.timeline-alert-error {
+  color: var(--danger, #dc2626);
+  font-size: .9em;
+}
+
+/* ตัวเลขสรุปหัวจอ — และเป็นตัวเลือกกลุ่มไปในตัว
+   การ์ดใบเดียวกันนี้อยู่ทั้งหน้า "วันนี้" และหน้าปฏิทิน */
+.timeline-stat {
+  /* เป็น <a> แต่ต้องไม่ดูเป็นข้อความลิงก์ — ทั้งใบคือปุ่ม ไม่ใช่คำที่ขีดเส้นใต้ */
+  color: inherit;
+  text-decoration: none;
+}
+
+.timeline-stat .stat-value {
+  font-size: 2em;
+  font-weight: 600;
+}
+
+/* ใบที่กำลังเลือกอยู่ · บอกด้วยขอบ ไม่ใช่สีพื้นอย่างเดียว
+   เพราะสีพื้นของแต่ละใบถูกใช้บอกความเร่งด่วนไปแล้ว */
+.timeline-stat.is-active {
+  border-color: var(--color-primary, #2563eb);
+  box-shadow: inset 0 0 0 1px var(--color-primary, #2563eb);
+}
+
+.timeline-stat.is-overdue .stat-value {
+  color: var(--danger, #dc2626);
+}
+
+.timeline-stat.is-today .stat-value {
+  color: var(--warning, #f59e0b);
+}
+
+/* แถบสรุปบนหน้าปฏิทิน — กล่องของ ApiComponent ต้องเป็น block
+   และเว้นระยะจากปฏิทินที่อยู่ถัดลงไป */
+.timeline-summary {
+  display: block;
+  margin-bottom: 1em;
+}
+
+/* บอกว่ากำลังกรองอยู่ พร้อมทางกลับไปดูทั้งหมด
+   กล่องที่ data-for วนอยู่ไม่มีสไตล์ สไตล์อยู่ที่ตัวรายการนี้ —
+   ไม่งั้นจะเห็นแถบเปล่าค้างอยู่ตอนไม่ได้กรอง */
+.timeline-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5em;
+  margin-top: 1em;
+  padding: .5em .85em;
+  border: 1px solid var(--color-border);
+  border-radius: .5em;
+  background: var(--card-bg, #fff);
+}
+
+.timeline-filter b {
+  font-weight: 600;
+}
+
+.timeline-filter .btn {
+  margin-left: auto;
+}
+
+/* กลุ่มของแต่ละช่วงเวลา */
+.timeline-group {
+  margin-top: 1.5em;
+}
+
+.timeline-group > h2 {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  margin: 0 0 .5em;
+  font-size: 1.05em;
+  font-weight: 600;
+}
+
+.timeline-group > h2 em {
+  font-style: normal;
+  font-size: .85em;
+  padding: .1em .6em;
+  border-radius: 1em;
+  background: var(--bg-muted, #e5e7eb);
+  color: var(--text-muted, #6b7280);
+}
+
+.timeline-group.is-overdue > h2 em {
+  background: var(--danger, #dc2626);
+  color: #fff;
+}
+
+.timeline-cards {
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+}
+
+.timeline-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  align-items: flex-start;
+  padding: .85em 1em;
+  border-radius: .5em;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-left-width: 4px;
+  background: var(--card-bg, #fff);
+}
+
+/* ความเร่งด่วนอ่านได้จากขอบซ้ายโดยไม่ต้องอ่านข้อความ */
+.timeline-card.p-critical { border-left-color: var(--danger, #dc2626); }
+.timeline-card.p-high     { border-left-color: var(--warning, #f59e0b); }
+.timeline-card.p-normal   { border-left-color: var(--info, #3b82f6); }
+.timeline-card.p-low      { border-left-color: var(--border-color, #d1d5db); }
+
+.timeline-card-when {
+  flex: 0 0 9em;
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-card-when b {
+  font-size: .95em;
+}
+
+.timeline-card-when span {
+  font-size: .8em;
+  color: var(--text-muted, #6b7280);
+}
+
+.timeline-card-body {
+  flex: 1 1 16em;
+  min-width: 0;
+}
+
+.timeline-card-body h3 {
+  margin: 0 0 .15em;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.timeline-card-sub {
+  margin: 0;
+  font-size: .9em;
+  color: var(--text-muted, #6b7280);
+}
+
+.timeline-card-src {
+  margin: .15em 0 0;
+  font-size: .78em;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: var(--text-muted, #9ca3af);
+}
+
+.timeline-card-actions {
+  flex: 0 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3em;
+  align-items: center;
+}
+
+.timeline-card-actions .btn {
+  font-size: .85em;
+  padding: .3em .7em;
+}
+
+.timeline-snooze {
+  display: inline-flex;
+  align-items: center;
+  gap: .25em;
+}
+
+.timeline-snooze b {
+  font-size: .8em;
+  font-weight: 500;
+  color: var(--text-muted, #6b7280);
+}
+
+/* หน้าสถานะการเชื่อมต่อ */
+.tl-badge {
+  display: inline-block;
+  padding: .15em .7em;
+  border-radius: 1em;
+  font-size: .85em;
+  background: var(--bg-muted, #e5e7eb);
+  color: var(--text-muted, #4b5563);
+}
+
+.tl-badge.tl-ok      { background: var(--success, #10b981); color: #fff; }
+.tl-badge.tl-failed  { background: var(--danger, #dc2626); color: #fff; }
+.tl-badge.tl-partial { background: var(--warning, #f59e0b); color: #fff; }
+.tl-badge.tl-stale   { background: var(--warning, #f59e0b); color: #fff; }
+
+/* กฎการเตือน — ที่ปิดอยู่ต้องอ่านออกว่า "ปิด" ตั้งแต่ชายตามอง ไม่ใช่ต้องอ่านคำ */
+.tl-badge.tl-rule-on  { background: var(--success, #10b981); color: #fff; }
+.tl-badge.tl-rule-off { background: var(--border, #d1d5db); color: var(--text-muted, #6b7280); }
+tr.tl-rule-off td     { opacity: .6; }
+
+@media (max-width: 640px) {
+  .timeline-card-when {
+    flex-basis: 100%;
+    flex-direction: row;
+    gap: .5em;
+    align-items: baseline;
+  }
+
+  .timeline-card-actions {
+    flex-basis: 100%;
+  }
+}
+
+/* หน้าผูกบัญชีแชต */
+.timeline-linkbox {
+  margin-top: 1.5em;
+  padding: 1em 1.2em;
+  border-radius: .5em;
+  border: 1px solid var(--border-color, #e5e7eb);
+  background: var(--card-bg, #fff);
+}
+
+.timeline-linkbox h3 {
+  margin: 0 0 .5em;
+  font-size: 1em;
+}
+
+.timeline-linkbox ol {
+  margin: 0 0 .75em;
+  padding-left: 1.2em;
+  color: var(--text-muted, #6b7280);
+}
+
+/* รหัสต้องอ่านและพิมพ์ตามได้ง่าย เพราะผู้ใช้ต้องพิมพ์มันในอีกเครื่องหนึ่ง */
+.timeline-code {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75em;
+  align-items: center;
+  margin-top: .75em;
+  padding: .75em 1em;
+  border-radius: .5em;
+  background: var(--bg-muted, #f3f4f6);
+}
+
+.timeline-code b {
+  font-family: ui-monospace, monospace;
+  font-size: 1.6em;
+  letter-spacing: .18em;
+}
+
+.timeline-code span {
+  color: var(--text-muted, #6b7280);
+  font-size: .9em;
+}
+
+.timeline-code code {
+  padding: .2em .6em;
+  border-radius: .3em;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #e5e7eb);
+}
+
+/* ผลการทดสอบต้องอ่านออกทันทีว่าผ่านหรือไม่ผ่าน ไม่ใช่ต้องอ่านข้อความก่อน */
+.tl-test {
+  margin-top: .8em;
+  padding: .6em .9em;
+  border-radius: .35em;
+  border-left: 4px solid var(--success, #10b981);
+  background: var(--bg-muted, #f3f4f6);
+  font-size: .9em;
+}
+
+.tl-test.is-bad {
+  border-left-color: var(--danger, #dc2626);
+  color: var(--danger, #dc2626);
+}
+
+.tl-actions {
+  white-space: nowrap;
+}
+
+.tl-actions .btn {
+  margin: .1em;
+}
+
+/* ข้อมูลสรุปจากต้นทาง
+ *
+ * ตัว dl เป็นคอนเทนเนอร์ของ data-for จึงมีอยู่เสมอแม้ไม่มีข้อมูล — ห้ามมี
+ * พื้นหลัง เส้นขอบ หรือ padding เด็ดขาด ไม่งั้นการ์ดที่ต้นทางไม่ส่ง facts มา
+ * จะมีกล่องเปล่าคาอยู่ (บั๊กเดียวกับที่เคยเกิดกับแถบแจ้งเตือน) */
+.timeline-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 10px;
+  margin: 0;
+  font-size: .86em;
+}
+.timeline-facts dt {
+  color: var(--text-muted, #6b7280);
+  white-space: nowrap;
+}
+.timeline-facts dd {
+  margin: 0;
+  font-weight: 600;
+}
+/* ระยะห่างอยู่บนแถวแรก ไม่ใช่บนตัว dl — dl มีอยู่เสมอแม้ไม่มีข้อมูล
+ * ใส่ margin ไว้บนมันแปลว่าการ์ดที่ไม่มี facts จะมีช่องว่างคาอยู่ */
+.timeline-facts dt:first-of-type,
+.timeline-facts dd:first-of-type { margin-top: 6px; }
+
+/* สถานะของแต่ละฉบับในประวัติการแจ้งเตือน (หน้า /history)
+   แยกชุดจาก .tl-ok/.tl-failed ของหน้า Connections เพราะคนละความหมาย —
+   ที่นั่น failed คือ "ดึงข้อมูลไม่สำเร็จ" ที่นี่คือ "ส่งข้อความไม่ออก" */
+.tl-badge.tl-r-sent    { background: var(--success, #10b981); color: #fff; }
+.tl-badge.tl-r-partial { background: var(--warning, #f59e0b); color: #fff; }
+.tl-badge.tl-r-failed  { background: var(--danger, #dc2626); color: #fff; }
+.tl-badge.tl-r-skipped { background: var(--border, #d1d5db); color: var(--text-muted, #6b7280); }
+.tl-badge.tl-r-pending { background: var(--info, #3b82f6); color: #fff; }
+
+/* กฎที่ถูกซ่อนจากหน้ากระดาน — ต้องอ่านออกจากตารางว่าแถวไหนถูกซ่อนอยู่
+   ไม่ใช่รู้ได้จากการกดเข้าไปดูทีละอัน */
+tr.tl-board-off td:first-child b { text-decoration: line-through; opacity: .7; }
+
+/* คำอธิบายสีใต้ปฏิทิน — ปฏิทินสื่อด้วยสีอย่างเดียว ถ้าไม่บอกว่าสีไหนคืออะไร
+   คนอ่านต้องเดา แล้วสีที่เดาผิดแย่กว่าไม่มีสี */
+.timeline-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.timeline-legend li { display: flex; align-items: center; gap: 8px; }
+.timeline-legend i {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}

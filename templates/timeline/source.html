@@ -1,0 +1,88 @@
+<!-- ฟอร์มเพิ่ม/แก้ระบบต้นทาง — เปิดเป็น Modal จาก api/timeline/connections/form
+     แยกจาก connections.html ตามกติกา "ตารางกับฟอร์มคนละเทมเพลต" ฟอร์มจึงไม่ถูก
+     วาดใหม่ตอนตารางรีเฟรช และไม่ต้องมีสถานะซ่อน/แสดงค้างอยู่ในหน้ารายการ -->
+<form data-form="timelineSource" action="api/timeline/connections/save" method="post"
+      data-ajax-submit="true" data-validate="false" data-reset="false" autocomplete="off">
+  <fieldset>
+    <legend class="icon-connection" data-i18n>{LNG_Application}</legend>
+    <div class="form-group">
+      <div class="width50">
+        <label for="source_slug" data-i18n>{LNG_Short name}</label>
+        <span class="form-control icon-label">
+          <input type="text" id="source_slug" name="slug" data-attr="value:slug"
+                 pattern="[a-z0-9_]{2,32}" maxlength="32" placeholder="loan" required>
+        </span>
+        <div class="comment" data-i18n>{LNG_Must match the slug the application reports}</div>
+      </div>
+      <div class="width50">
+        <label for="source_name" data-i18n>{LNG_Display name}</label>
+        <span class="form-control icon-edit">
+          <input type="text" id="source_name" name="name" data-attr="value:name"
+                 maxlength="100" required>
+        </span>
+      </div>
+    </div>
+    <div>
+      <label for="source_base_url" data-i18n>{LNG_API address}</label>
+      <span class="form-control icon-link">
+        <input type="url" id="source_base_url" name="base_url" data-attr="value:base_url"
+               placeholder="https://example.com/api" required>
+      </span>
+      <div class="comment" data-i18n>{LNG_Up to the part before /timeline/...}</div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend class="icon-shield" data-i18n>{LNG_Token}</legend>
+    <div class="form-group">
+      <div class="width50">
+        <label for="source_token" data-i18n>{LNG_Token}</label>
+        <span class="form-control icon-password">
+          <input type="password" id="source_token" name="token" autocomplete="new-password">
+        </span>
+        <!-- ไม่เคยส่งค่าเดิมกลับมาให้เห็น การเว้นว่างจึงต้องแปลว่า "ไม่เปลี่ยน" -->
+        <div class="comment" data-i18n>{LNG_Leave blank to keep the current one}</div>
+      </div>
+    </div>
+    <!-- ผลการทดสอบขึ้นตรงนี้ ให้รู้ว่า URL กับ token ถูกไหมก่อนกดบันทึก -->
+    <div id="source-test"></div>
+  </fieldset>
+
+  <fieldset>
+    <legend class="icon-clock" data-i18n>{LNG_Sync every (minutes)}</legend>
+    <div class="form-group">
+      <div class="width33">
+        <label for="source_interval_min" data-i18n>{LNG_Sync every (minutes)}</label>
+        <span class="form-control icon-refresh">
+          <input type="number" id="source_interval_min" name="interval_min"
+                 data-attr="value:interval_min" min="5" max="10080" required>
+        </span>
+      </div>
+      <div class="width33">
+        <label for="source_horizon_past" data-i18n>{LNG_Look back}</label>
+        <span class="form-control icon-history">
+          <input type="text" id="source_horizon_past" name="horizon_past"
+                 data-attr="value:horizon_past" pattern="P[0-9A-Z]+" required>
+        </span>
+      </div>
+      <div class="width33">
+        <label for="source_horizon_future" data-i18n>{LNG_Look ahead}</label>
+        <span class="form-control icon-calendar">
+          <input type="text" id="source_horizon_future" name="horizon_future"
+                 data-attr="value:horizon_future" pattern="P[0-9A-Z]+" required>
+        </span>
+      </div>
+    </div>
+    <div>
+      <input type="checkbox" class="switch" id="source_enabled" name="enabled" value="1"
+             data-attr="checked:enabled">
+      <label for="source_enabled" data-i18n>{LNG_Enabled}</label>
+    </div>
+  </fieldset>
+
+  <fieldset class="submit">
+    <button type="button" class="btn icon-search" data-source-test data-i18n>{LNG_Test Connection}</button>
+    <button type="submit" class="btn btn-primary icon-save" data-i18n>{LNG_Save}</button>
+    <input type="hidden" name="id" data-attr="value:id">
+  </fieldset>
+</form>
