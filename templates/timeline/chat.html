@@ -1,0 +1,38 @@
+<div class="card-groups">
+  <header>
+    <div>
+      <h1 class="icon-comments" data-i18n>{LNG_Chat account}</h1>
+      <p data-i18n>{LNG_Link a chat room so it can read and act on your timeline}</p>
+    </div>
+  </header>
+  <div class="content-body" data-component="api"
+       data-endpoint="api/timeline/chatlink"
+       data-refresh-event="chatlink:reload"
+       data-pagination="false"
+       id="timeline-chatlink">
+    <div class="tablebody">
+      <table class="table border fullwidth" data-table="timelineChat" data-attr="data:rows" data-url-params="false" data-show-caption="false">
+        <thead>
+          <tr>
+            <th data-field="label" data-template="<b>${label}</b>" data-i18n>{LNG_Channel}</th>
+            <th data-field="channel" data-template="<span data-if='linked' class='tl-badge tl-ok' data-i18n>{LNG_Linked}</span><span data-if='!linked' class='tl-badge' data-i18n>{LNG_Not linked}</span> <span>${hint}</span>" data-i18n>{LNG_Status}</th>
+            <th data-field="hint" data-template="<button data-if='linked' type='button' class='btn btn-danger' data-unlink='${channel}' data-i18n>{LNG_Unlink}</button>"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="timeline-linkbox">
+      <h3 data-i18n>{LNG_Link a new chat room}</h3>
+      <ol>
+        <li data-i18n>{LNG_Press the button to get a code}</li>
+        <li data-i18n>{LNG_Type /link followed by the code in the chat}</li>
+      </ol>
+      <p class="timeline-alert-error" data-if="!has_bot" data-i18n>{LNG_No chat bot configured yet}</p>
+      <p data-if="has_bot"><span data-i18n>{LNG_Send the code to}</span> @<span data-text="bot"></span></p>
+      <button type="button" class="btn btn-primary icon-key" data-issue-code data-i18n>{LNG_Get a code}</button>
+      <div id="timeline-code"></div>
+    </div>
+  </div>
+</div>

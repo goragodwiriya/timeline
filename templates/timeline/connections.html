@@ -1,0 +1,57 @@
+<div class="card-groups">
+  <header>
+    <div>
+      <h1 class="icon-refresh" data-i18n>{LNG_Connections}</h1>
+      <p data-i18n>{LNG_Where the data on every screen comes from, and how fresh it is}</p>
+    </div>
+    <div>
+      <button type="button" class="btn icon-plus" data-source-new data-i18n>{LNG_Add application}</button>
+      <button type="button" class="btn btn-primary icon-refresh" data-timeline-sync="0" data-i18n>{LNG_Sync Now}</button>
+    </div>
+  </header>
+  <div class="tablebody" data-component="api" data-endpoint="api/timeline/connections" data-refresh-event="timeline:reload" data-pagination="false" id="timeline-connections">
+    <table class="table border fullwidth" data-table="timelineConnections" data-attr="data:rows" data-url-params="false" data-show-caption="false">
+      <thead>
+        <tr>
+          <th data-field="name" data-template="<b>${name}</b><br><small>${slug}</small>" data-i18n>{LNG_Application}</th>
+          <th data-field="items" data-i18n>{LNG_Items}</th>
+          <th data-field="last_ok_text" data-template="<span>${last_ok_text}</span><br><small>${last_ok_at}</small>" data-empty-text="-" data-i18n>{LNG_Last successful sync}</th>
+          <th data-field="state" data-template="<span class='tl-badge tl-${state}' data-i18n>${state_lng}</span> <small class='timeline-alert-error' data-if='last_error'>${last_error}</small>" data-i18n>{LNG_Status}</th>
+          <th data-field="id" data-cell-class="tl-actions"
+              data-template="<span data-if='managed'><button type='button' class='btn btn-primary icon-refresh' data-timeline-sync='${id}' data-i18n>{LNG_Sync Now}</button> <button type='button' class='btn icon-edit' data-source-edit='${id}' data-i18n>{LNG_Edit}</button> <button type='button' class='btn btn-danger icon-delete' data-source-remove='${id}' data-source-name='${name}' data-i18n>{LNG_Delete}</button></span>"></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+<div class="card-groups">
+  <header>
+    <div>
+      <h1 class="icon-bell" data-i18n>{LNG_Rules per kind}</h1>
+      <p data-i18n>{LNG_Two switches per kind: whether it goes to chat, and whether it shows on the Today board. Hidden kinds are still stored and still turn up in search} </p>
+    </div>
+    <div>
+      <button type="button" class="btn icon-plus" data-rule-new data-i18n>{LNG_Add rule}</button>
+    </div>
+  </header>
+  <div class="tablebody" data-component="api" data-endpoint="api/timeline/reminders" data-refresh-event="reminders:reload" data-pagination="false" id="timeline-reminders">
+    <table class="table border fullwidth" data-table="timelineRules" data-attr="data:rows" data-url-params="false" data-show-caption="false">
+      <thead>
+        <tr>
+          <th data-field="label" data-template="<b>${label}</b><br><small>${kind}</small>" data-i18n>{LNG_Kind}</th>
+          <th data-field="source_name" data-template="<small>${source_name}</small>" data-i18n>{LNG_Application}</th>
+          <th data-field="offsets_text" data-template="<small>${offsets_text}</small>" data-i18n>{LNG_When}</th>
+          <th data-field="items" data-i18n>{LNG_Items}</th>
+          <th data-field="state" data-template="<span data-if='enabled' class='tl-badge tl-rule-on' data-i18n>{LNG_Send}</span><span data-if='!enabled' class='tl-badge tl-rule-off' data-i18n>{LNG_Do not send}</span>" data-i18n>{LNG_Chat}</th>
+          <th data-field="board_state"
+              data-template="<button data-if='visible' type='button' class='btn btn-primary' data-board-toggle='${id}' data-board-next='${board_next}' data-i18n>{LNG_Show}</button><button data-if='!visible' type='button' class='btn tl-board-off' data-board-toggle='${id}' data-board-next='${board_next}' data-i18n>{LNG_Hide}</button>"
+              data-i18n>{LNG_On the board}</th>
+          <th data-field="id" data-cell-class="tl-actions"
+              data-template="<button data-if='enabled' type='button' class='btn btn-primary' data-reminder-toggle='${id}' data-reminder-next='${next}' data-i18n>{LNG_Off}</button><button data-if='!enabled' type='button' class='btn' data-reminder-toggle='${id}' data-reminder-next='${next}' data-i18n>{LNG_On}</button> <button type='button' class='btn icon-edit' data-rule-edit='${id}' data-i18n>{LNG_Edit}</button> <button type='button' class='btn btn-danger icon-delete' data-rule-remove='${id}' data-rule-name='${label}' data-i18n>{LNG_Delete}</button>"></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
